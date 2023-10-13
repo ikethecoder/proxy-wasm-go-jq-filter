@@ -67,10 +67,15 @@ filter_chains:
 ### Example
 
 ```
--- Verifies the JQ WASM plugin
 curl -d @local/sample_payload.json \
   -H "Content-Type: application/json" \
   http://127.0.0.1:6200/post
+```
+
+Result:
+
+```json
+["1", "3"]
 ```
 
 ## Testing
