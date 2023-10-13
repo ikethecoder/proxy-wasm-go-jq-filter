@@ -103,13 +103,12 @@ func (ctx *myPluginHTTPContext) OnHttpResponseBody(int, bool) types.Action {
 		log.Fatalf("Failed to get response body")
 	}
 
-	parsedDocument, err := jq.ParseJQ(body, ".")
+	parsedDocument, err := jq.ParseJQ(body, ctx.conf.Query)
 	if err != nil {
 		log.Fatalf("Failed to get response body")
 	}
-	proxywasm.ReplaceHttpResponseBody(parsedDocument)
 
-	log.Printf("Getting response! %s", parsedDocument)
+	proxywasm.ReplaceHttpResponseBody(parsedDocument)
 	return types.ActionContinue
 }
 

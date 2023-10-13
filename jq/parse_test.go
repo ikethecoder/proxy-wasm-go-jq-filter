@@ -22,7 +22,7 @@ func TestParseJQ(t *testing.T) {
 					"city": "New York"
 				}
 			}`),
-			want: []byte(`"John"`),
+			want: []byte(`["John"]`),
 		},
 		{
 			name:  "filter string",
@@ -65,6 +65,27 @@ func TestParseJQ(t *testing.T) {
 			  ]
 			`),
 			want: []byte(`["2","3"]`),
+		},
+		{
+			name:  "filter array one found",
+			query: `.[] | select(.Tags | index("low") > 0) | .Id`,
+			input: []byte(`
+			[
+				{
+				  "Id": "1",
+				  "Tags": ["simple", "low"]
+				},
+				{
+				  "Id": "2",
+				  "Tags": ["simple", "urgent"]
+				},
+				{
+				  "Id": "3",
+				  "Tags": ["simple", "urgent"]
+				}
+			  ]
+			`),
+			want: []byte(`["1"]`),
 		},
 	}
 	for _, tt := range tests {

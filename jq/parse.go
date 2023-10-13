@@ -31,6 +31,7 @@ func ParseJQ(jsonData []byte, query string) ([]byte, error) {
 		if !ok {
 			break
 		}
+		log.Printf("ITEM %v", v)
 		result = append(result, v)
 	}
 
@@ -40,23 +41,24 @@ func ParseJQ(jsonData []byte, query string) ([]byte, error) {
 	// 	return nil, err
 	// }
 
-	if len(result) == 1 {
-		resultJSON, err := gojq.Marshal(result[0])
-		if err != nil {
-			log.Fatalf("JSON conversion error: %v", err)
-			return nil, err
-		}
-		return resultJSON, nil
+	// if len(result) == 1 {
+	// 	log.Printf("ONE ROW = %T", result[0])
+	// 	resultJSON, err := gojq.Marshal(result[0])
+	// 	if err != nil {
+	// 		log.Fatalf("JSON conversion error: %v", err)
+	// 		return nil, err
+	// 	}
+	// 	return resultJSON, nil
 
-	} else {
-		resultJSON, err := gojq.Marshal(result)
-		if err != nil {
-			log.Fatalf("JSON conversion error: %v", err)
-			return nil, err
-		}
-		return resultJSON, nil
-
+	// } else {
+	resultJSON, err := gojq.Marshal(result)
+	if err != nil {
+		log.Fatalf("JSON conversion error: %v", err)
+		return nil, err
 	}
+	return resultJSON, nil
+
+	// }
 	// Convert the result back to a JSON byte array
 
 }
