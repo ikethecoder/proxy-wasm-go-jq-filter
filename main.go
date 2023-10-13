@@ -1,9 +1,10 @@
 package main
 
 import (
-	"fmt"
+	"log"
 
-	"github.com/kong/proxy-wasm-go-filter-template/config"
+	"github.com/ikethecoder/proxy-wasm-go-filter-template/config"
+	"github.com/ikethecoder/proxy-wasm-go-filter-template/jq"
 
 	"github.com/tetratelabs/proxy-wasm-go-sdk/proxywasm"
 	"github.com/tetratelabs/proxy-wasm-go-sdk/proxywasm/types"
@@ -60,6 +61,7 @@ func (ctx *myPluginContext) OnPluginStart(confSize int) types.OnPluginStartStatu
 		return types.OnPluginStartStatusFailed
 	}
 
+	proxywasm.LogInfo("OnPluginStart from Go!")
 	return types.OnPluginStartStatusOK
 }
 
@@ -90,16 +92,27 @@ func (ctx *myPluginContext) NewHttpContext(pluginID uint32) types.HttpContext {
 // }
 
 func (ctx *myPluginHTTPContext) OnHttpResponseHeaders(int, bool) types.Action {
-	if ctx.conf.MyGreeting != "" {
-		greeting := fmt.Sprintf("%v", ctx.conf.MyGreeting)
-		proxywasm.AddHttpResponseHeader("X-Greeting", greeting)
-	}
+	proxywasm.RemoveHttpResponseHeader("Content-Length")
+
 	return types.ActionContinue
 }
 
-// func (*myPluginHTTPContext) OnHttpResponseBody(int, bool) types.Action {
-// 	return types.ActionContinue
-// }
+func (ctx *myPluginHTTPContext) OnHttpResponseBody(int, bool) types.Action {
+	body, err := proxywasm.GetHttpResponseBody(0, 100000000)
+	if err != nil {
+		log.Fatalf("Failed to get response body")
+	}
+
+	parsedDocument, err := jq.ParseJQ(body, ".")
+	if err != nil {
+		log.Fatalf("Failed to get response body")
+	}
+	proxywasm.ReplaceHttpResponseBody(parsedDocument)
+
+	log.Printf("Getting response! %s", parsedDocument)
+	return types.ActionContinue
+}
+
 //
 // func (*myPluginHTTPContext) OnHttpStreamDone() {
 // }

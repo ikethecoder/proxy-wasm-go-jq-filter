@@ -1,7 +1,7 @@
 GO=go
 GOFMT=gofmt
 TINYGO=tinygo
-FILTER_NAME=my-go-filter
+FILTER_NAME=jq-filter
 GOPATH_BIN := $(shell echo $${GOPATH:-$$HOME/go}/bin)
 
 build: main.go config/config.go config/config_ffjson.go go.mod
