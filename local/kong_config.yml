@@ -1,0 +1,16 @@
+_format_version: "3.0"
+services:
+  - name: my-wasm-service
+    url: http://httpbin.org
+    routes:
+      - name: my-wasm-route
+        paths: ["/"]
+        filter_chains:
+          - name: my-filter-chain
+            tags: [ns.sample]
+            filters:
+              - name: jq-filter
+                config: >-
+                  {
+                    "Query": ".data | fromjson | .[] | select(.Priority == \"Urgent\") | .Id"
+                  }

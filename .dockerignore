@@ -1,0 +1,5 @@
+*.wasm
+ffjson*
+config_ffjson*
+Dockerfile
+local
