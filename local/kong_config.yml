@@ -6,9 +6,7 @@ services:
       - name: my-wasm-route
         paths: ["/"]
         filter_chains:
-          - name: my-filter-chain
-            tags: [ns.sample]
-            filters:
+          - filters:
               - name: jq-filter
                 config: >-
                   {
