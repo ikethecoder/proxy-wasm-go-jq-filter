@@ -58,11 +58,11 @@ filter_chains:
 
 ### Parameters
 
-| Parameter    | Requied | Default | Description                                              |
-| ------------ | ------- | ------- | -------------------------------------------------------- |
-| name         | yes     |         | The name of the filter to use, in this case `jq-filter`. |
-| config       | yes     |         | A JSON object represented as a string.                   |
-| config.Query | no      | "."     | The JQ query to perform on the response payload.         |
+| Parameter    | Required | Default | Description                                              |
+| ------------ | -------- | ------- | -------------------------------------------------------- |
+| name         | yes      |         | The name of the filter to use, in this case `jq-filter`. |
+| config       | yes      |         | A JSON object represented as a string.                   |
+| config.Query | no       | "."     | The JQ query to perform on the response payload.         |
 
 ### Example
 
