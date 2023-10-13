@@ -1,5 +1,7 @@
 package config
 
+import "github.com/pquerna/ffjson/ffjson"
+
 // -----------------------------------------------------------------------------
 // Instance Config
 // -----------------------------------------------------------------------------
@@ -14,10 +16,10 @@ type Config struct {
 func Load(data []byte, conf *Config) error {
 	conf.Query = "."
 
-	// err := ffjson.Unmarshal(data, conf)
-	// if err != nil {
-	// 	return err
-	// }
+	err := ffjson.Unmarshal(data, conf)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
